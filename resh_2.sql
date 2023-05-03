@@ -3921,9 +3921,8 @@ a  as (
 --на второй итерации нумеруем CKEY и CNUM
 SELECT row_number() over() CKEY, --пронумеруем попорядку Уникальный код пункта в справочнике
 	   CREF, --на данном этапе остаётся пустым
-	   --Порядковый № пункта в своей иерархии формируем оконной функцией (окно - своя иерархия)
-       row_number() OVER (PARTITION BY substr(textcode,1,length(textcode)-length(substring(textcode,'.[0-9]*.$'))) 
-						  order by substr(substring(textcode,'[0-9]*.$'),1,length(substring(textcode,'[0-9]*.$'))-1)::DECIMAL) CNUM,
+	   --Порядковый № пункта в своей иерархии
+       substring(textcode,'[0-9]*.$')::DECIMAL  CNUM,
        CEND, -- пока тоже не заполняем
 	   textcode,NAME -- переносим эти поля как есть
 FROM vt_amb),
